@@ -58,6 +58,9 @@ def uploadfile():
             status = 0
             return render_template("integration.html", stcarga=status)
 
+    else:
+        return render_template("integration.html", stcarga=status)
+
 
 @app.route('/analystfile', methods=['GET', 'POST'])
 def analystfile():
@@ -71,6 +74,21 @@ def analystfile():
         # Abrir el archivo de Excel con openpyxl
         wb = load_workbook(data_file)
         ws = wb.active
+
+   # Comprobar que las columnas necesarias están presentes
+        required_columns = ['SEXO', 'EDAD', 'REGIMEN', 'VICTIMA DE CONFLICTO',
+                            'MIGRANTE', 'CARCELARIO', 'EN ESTADO DE GESTACION',
+                            'OTRO', 'DESPLAZADO']
+
+        columns_in_file = [cell.value for cell in ws[1]]
+
+        missing_columns = [
+            col for col in required_columns if col not in columns_in_file]
+
+        if missing_columns:
+            flash(
+                f'Faltan las siguientes columnas necesarias en el archivo: {", ".join(missing_columns)}', 'error')
+            return render_template("integration.html", stdf=0)
 
         # Obtener las filas visibles (comprobando si están ocultas por el filtro)
         visible_rows = []
@@ -137,7 +155,12 @@ def analystfile():
 
         status = 1
 
+        flash('Analisis de forma exitosa.')
+
         return render_template("integration.html", stdf=status)
+
+    else:
+        return render_template("integration.html", stcarga=status)
 
 
 @app.route('/downloaderfile', methods=['POST'])
@@ -155,4 +178,4 @@ def downloaderfile():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

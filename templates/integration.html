@@ -3,43 +3,100 @@
 {% block content %}
 
 
-    <!-- Mensajes Flash -->
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
 
     <!-- Formulario de carga -->
-    <form action="/uploadfile" method="POST" enctype="multipart/form-data">
-        <label for="file">Selecciona un archivo (CSV, XLS, XLSX):</label>
-        <input type="file" name="file" id="file" required>
-        <button type="submit">Subir archivo</button>
-    </form>
+
+
+       
+                <div class="card text-dark border-info   mb-3" >
+                    
+                    <div class="card-body">
+
+        
+
+                                <form action="/uploadfile" method="POST" enctype="multipart/form-data" class="form">
+
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <label  class="label" for="file">Selecciona un archivo (XLSX):</label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <input  class="form-control" type="file" name="file" id="file" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <button  class="btn btn-dark" type="submit">Subir archivo</button>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                        </form>
+                        
+                    </div>
+                </div>
+      
+
+
+                <!-- Mensajes Flash -->
+                {% with messages = get_flashed_messages() %}
+                
+                    {% if messages %}
+                    
+                    <div class="alert border-info" role="alert">
+                        <div  class="font-weight-bold mb-3">
+                            Resultado:
+                        </div>
+                        
+                        <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                {% endwith %}
+            
+        
+
+
+
+<div class="row text-center">
+
+    <div class="col">
+        {% if stcarga == 1 %}
+        <form action="/analystfile" method="POST">
+            <input type="hidden" name="status" value="1">
+            <button class="btn btn btn-dark" type="submit">Analizar archivo.</button>
+            </form>
+        {% endif %}
+
+    </div>
+</div>
 
 
 
 
+<div class="row text-center">
 
-    {% if stcarga == 1 %}
-    <form action="/analystfile" method="POST">
-        <input type="hidden" name="status" value="1">
-        <button type="submit">analizar</button>
-        </form>
-    {% endif %}
+    <div class="col">
 
+        {% if stdf == 1 %}
+        <form action="/downloaderfile" method="POST">
+            <input type="hidden" name="statusv" value="1">
+            <button class="btn btn btn-success" type="submit">DESCARGAR</button>
+            </form>
 
+        {% endif %}
 
+    </div>
 
-    {% if stdf == 1 %}
-    <form action="/downloaderfile" method="POST">
-        <input type="hidden" name="statusv" value="1">
-        <button type="submit">descargar</button>
-        </form>
-    {% endif %}
+</div>
 
 {% endblock %}
