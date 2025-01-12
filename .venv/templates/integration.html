@@ -23,9 +23,23 @@
 
 
 
+
+
+    {% if stcarga == 1 %}
     <form action="/analystfile" method="POST">
-        <input type="hidden" value="1">
+        <input type="hidden" name="status" value="1">
         <button type="submit">analizar</button>
-    </form>
+        </form>
+    {% endif %}
+
+
+
+
+    {% if stdf == 1 %}
+    <form action="/downloaderfile" method="POST">
+        <input type="hidden" name="statusv" value="1">
+        <button type="submit">descargar</button>
+        </form>
+    {% endif %}
 
 {% endblock %}
