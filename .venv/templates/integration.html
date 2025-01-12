@@ -1,0 +1,31 @@
+{% extends "template.html" %}
+
+{% block content %}
+
+
+    <!-- Mensajes Flash -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Formulario de carga -->
+    <form action="/uploadfile" method="POST" enctype="multipart/form-data">
+        <label for="file">Selecciona un archivo (CSV, XLS, XLSX):</label>
+        <input type="file" name="file" id="file" required>
+        <button type="submit">Subir archivo</button>
+    </form>
+
+
+
+    <form action="/analystfile" method="POST">
+        <input type="hidden" value="1">
+        <button type="submit">analizar</button>
+    </form>
+
+{% endblock %}

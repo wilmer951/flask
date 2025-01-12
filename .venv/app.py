@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from flask import Flask, request, render_template, flash, redirect, url_for
 
 app = Flask(__name__)
@@ -26,20 +27,23 @@ def allowed_file(filename):
 
 
 
+# Ruta para la página integracion
+@app.route('/integration', methods=['GET', 'POST'])
+def integration():
+    return render_template("integration.html")
+
 # Ruta para la página de subir archivo
 @app.route('/uploadfile', methods=['GET', 'POST'])
 def uploadfile():
+
 
  
     if request.method == 'POST':
     
 
 
-        folder_path = app.config['UPLOAD_FOLDER']
-        if os.path.exists(folder_path) and os.path.isdir(folder_path):
-                flash('No hay archivos a procesar!')
-                
-                return redirect(request.url)
+
+        
 
 
 
@@ -53,7 +57,7 @@ def uploadfile():
                 # Si el archivo es válido
         if file and allowed_file(file.filename):
                     # Guardar el archivo en la carpeta de uploads
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], "data.xmls")
             file.save(filepath)
             flash(f'Archivo "{file.filename}" cargado exitosamente!')
             return redirect(request.url)
@@ -66,7 +70,38 @@ def uploadfile():
 
 
 
-    return render_template("uploadfile.html")
+    return render_template("integration.html")
+
+
+
+
+
+@app.route('/analystfile', methods=['GET', 'POST'])
+def analystfile():
+
+
+ 
+    if request.method == 'POST':
+    
+        print("analisis realizado")
+
+
+        data_clientes = os.path.join(app.config['UPLOAD_FOLDER'], "data.xmls")
+
+
+        df = pd.read_excel(data_clientes)
+
+
+        print(df)
+
+
+        return render_template("integration.html")
+
+
+
+
+
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
