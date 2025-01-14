@@ -14,7 +14,7 @@
 
         
 
-                                <form action="/uploadfile" method="POST" enctype="multipart/form-data" class="form">
+                                <form action="/analyticfile" method="POST" enctype="multipart/form-data" class="form">
 
                                     <div class="row mb-3">
                                         <div class="col font-weight-bold">
@@ -31,7 +31,7 @@
 
                                     <div class="row mb-3">
                                         <div class="col">
-                                            <button  class="btn btn-dark" type="submit">Subir archivo</button>
+                                            <button  class="btn btn-dark" type="submit">ANALIZAR ARCHIVO</button>
                                         </div>
                                     </div>
                                     
@@ -67,18 +67,7 @@
 
 
 
-<div class="row text-center">
 
-    <div class="col">
-        {% if stcarga == 1 %}
-        <form action="/analystfile" method="POST">
-            <input type="hidden" name="status" value="1">
-            <button class="btn btn btn-dark" type="submit">Analizar archivo.</button>
-            </form>
-        {% endif %}
-
-    </div>
-</div>
 
 
 
@@ -87,8 +76,8 @@
 
     <div class="col">
 
-        {% if stdf == 1 %}
-        <form action="/downloaderfile" method="POST">
+        {% if stv == 1 %}
+        <form action="/download_file" method="POST">
             <input type="hidden" name="statusv" value="1">
             <button class="btn btn btn-success" type="submit">DESCARGAR</button>
             </form>
