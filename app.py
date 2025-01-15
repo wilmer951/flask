@@ -1,9 +1,10 @@
 import os
 import pandas as pd
 from openpyxl import load_workbook
+import time
 
 
-from flask import Flask, request, render_template, flash, redirect, url_for, send_from_directory
+from flask import Flask, request, render_template, flash, redirect, url_for, send_from_directory, after_this_request
 
 app = Flask(__name__)
 app.jinja_env.cache = {}
@@ -12,6 +13,8 @@ app.jinja_env.cache = {}
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 app.config['ALLOWED_EXTENSIONS'] = {'xls', 'xlsx'}
 app.secret_key = 'your_secret_key'  # Para mensajes flash
+file_origen = "data.xlsx"
+file_end = "dataend.xlsx"
 
 
 # Ruta para la página de inicio
@@ -46,7 +49,7 @@ def uploadfile():
         # Si el archivo es válido
         if file and allowed_file(file.filename):
             # Guardar el archivo en la carpeta de uploads
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], "data.xlsx")
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file_origen)
             file.save(filepath)
             flash(f'Archivo "{file.filename}" cargado exitosamente!')
 
@@ -69,7 +72,7 @@ def analystfile():
 
     if request.method == 'POST':
 
-        data_file = os.path.join(app.config['UPLOAD_FOLDER'], "data.xlsx")
+        data_file = os.path.join(app.config['UPLOAD_FOLDER'], file_origen)
 
         # Abrir el archivo de Excel con openpyxl
         wb = load_workbook(data_file)
@@ -149,7 +152,7 @@ def analystfile():
         # Guardar el DataFrame modificado en un nuevo archivo de Excel
 
         output_file = os.path.join(
-            app.config['UPLOAD_FOLDER'], "datamodficado.xlsx")
+            app.config['UPLOAD_FOLDER'], file_end)
 
         df_visible.to_excel(output_file, index=False)
 
@@ -167,14 +170,45 @@ def analystfile():
 def downloaderfile():
 
     if request.method == 'POST':
-        file_name = "datamodficado.xlsx"
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_end)
 
         # Verificar si el archivo existe
         if os.path.exists(file_path):
-            return send_from_directory(app.config['UPLOAD_FOLDER'], file_name, as_attachment=True)
+
+            # Enviamos el archivo para su descarga
+            return send_from_directory(app.config['UPLOAD_FOLDER'], file_end, as_attachment=True)
+
         else:
-            return f"Archivo no encontrado: {file_path}", 404
+            flash('Se presento un error comuniquese con su administrador ')
+            return render_template("integration.html")
+
+    return render_template("integration.html")
+
+
+@app.route('/clearfile', methods=['GET', 'POST'])
+def clearfile():
+
+    if request.method == 'POST':
+        files_to_remove = [file_origen, file_end]
+        upload_folder = app.config['UPLOAD_FOLDER']
+        files_deleted = False  # Flag para saber si se eliminaron archivos
+
+        for file_name in files_to_remove:
+            output_file = os.path.join(upload_folder, file_name)
+            if os.path.exists(output_file):
+                os.remove(output_file)
+                files_deleted = True  # Marcar que al menos un archivo fue eliminado
+
+        if files_deleted:
+            # Solo mostrar este mensaje si se eliminaron archivos
+            flash('Limpieza exitosa.')
+        else:
+            flash('No hay datos que limpiar.')
+
+        return render_template("integration.html")
+
+    return render_template("integration.html")
 
 
 if __name__ == "__main__":
