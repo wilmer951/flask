@@ -1,0 +1,166 @@
+{% extends "template.html" %}
+
+{% block content %}
+
+
+
+    <!-- Formulario de carga -->
+
+
+       
+                <div class="card text-dark border-info   mb-3" >
+                    
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-6">
+
+                    
+                                    
+
+                                    <div class="row mb-3">
+                                        <div class="col font-weight-bold">
+                                            <label  class="label" for="file">Seleccione el archivo de EXCEL configurado.</label>
+                                        </div>
+                                    </div>
+
+                                    
+
+
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <input id="file" class="form-control" type="file" name="file" id="file" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <button id="btnloadfile" class="btn btn-sm btn-dark" type="submit" style="min-width: 15rem;">Cargar archivo</button>
+                                        </div>
+                                    </div>      
+                                    
+                    
+
+                            </div>
+
+
+
+                            <div class="col-6">
+                                <form action="/clearfile" method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="statusv" value="1">
+                                    <button class="btn btn-sm  btn-success" type="submit" style="min-width: 15rem;">LIMPIAR DATOS</button>
+                                    </form>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                </div>
+      
+
+
+
+
+
+
+
+                <div class="card text-dark border-info   mb-3 divanalytic">
+                    
+                    <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-6">
+
+                        
+                                    <div class="row">
+                                        <div class="col">
+                                            <button id="btnanalyticfile" class="btn btn-sm btn-primary" type="submit" style="min-width: 15rem;">Analizar archivo</button>
+                                        </div>
+                                    </div>      
+                                    
+
+                                </div>
+
+                        </div>
+                        
+                    </div>
+                </div>
+      
+
+
+
+
+
+
+
+
+
+    <div class="card text-dark border-info   mb-3 divdonloader">
+
+        <div class="card text-dark border-info" >
+                        
+            <div class="card-body">
+
+                <form action="./downloader" method="post">
+
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input  id="idownloader" type="hidden" name="statusv" value="1">
+                    <button  class="btn btn-sm btn-success"  type="submit" style="min-width: 15rem;">DESCARGAR</button>
+        
+                </form>
+                    
+
+            
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+<!-- MODAL MENSAJES DE ALERTA -->
+<div id="modalalert" class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content">
+            <div class="modal-header">
+            <button  id="btnclosettop" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+   
+                <div class="modal-body">
+        
+                    <div id="idmsgalert" class="text-center">
+                    </div>
+        
+        
+                </div>
+
+                <div class="modal-footer">
+                    <button id="btnclosemodal" type="button" class="btn btn-dark" data-bs-dismiss="modal">cerrar</button>
+                
+                  </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
